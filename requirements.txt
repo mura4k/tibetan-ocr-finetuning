@@ -1,0 +1,19 @@
+# for Demo_FineTuning
+torch
+numpy
+huggingface_hub
+pyewts
+jiwer
+onnx
+
+# for Utils
+opencv-python
+tqdm
+natsort
+scikit-learn
+botok
+
+# for Modules
+evaluate
+albumentations
+pyctcdecode

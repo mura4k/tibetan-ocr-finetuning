@@ -13,8 +13,9 @@ from pathlib import Path
 import numpy.typing as npt
 from natsort import natsorted
 from typing import Dict, List, Tuple
+from collections import defaultdict
 from sklearn.model_selection import train_test_split
-from botok import tokenize_in_stacks, normalize_unicode
+from botok import normalize_unicode
 
 
 class Labelformat(Enum):
@@ -316,11 +317,68 @@ def save_distribution(train_images: List[str], valid_images: List[str], test_ima
     print(f"Saved data distribution to: {out_file}")
 
 
-def split_dataset(images: List[str], labels: List[str], train_val_split: float = 0.2, val_test_split: float = 0.5, seed: int = 42):
-    train_images, valtest_images, train_labels, valtest_labels = train_test_split(images, labels, test_size=train_val_split, random_state=seed)
-    val_images, test_images, val_labels, test_labels = train_test_split(valtest_images, valtest_labels, test_size=val_test_split, random_state=seed)
+def split_dataset(images: List[str], labels: List[str],
+                  train_val_split: float = 0.2,
+                  val_test_split: float = 0.5,
+                  seed: int = 42):
+
+    train_images, valtest_images, train_labels, valtest_labels = train_test_split(
+        images, labels, test_size=train_val_split, random_state=seed)
+    val_images, test_images, val_labels, test_labels = train_test_split(
+        valtest_images, valtest_labels, test_size=val_test_split, random_state=seed)
 
     return train_images, train_labels, val_images, val_labels, test_images, test_labels
+
+
+def split_dataset_grouped_by_file(images: List[str], labels: List[str],
+                                   train_split: float = 0.8,
+                                   val_test_split: float = 0.5,
+                                   seed: int = 42) -> Tuple[List[str], List[str], List[str], List[str], List[str], List[str]]:
+    """
+    Split dataset by grouping all lines from the same document.
+    Returns: train_images, train_labels, val_images, val_labels, test_images, test_labels
+    """
+
+    # === Step 1: Group by file prefix (e.g. 042_proj19)
+    grouped = defaultdict(list)
+    for img, lbl in zip(images, labels):
+        prefix = "_".join(os.path.basename(img).split("_")[:2])
+        grouped[prefix].append((img, lbl))
+
+    # === Step 2: Shuffle and split docs
+    random.seed(seed)
+    doc_ids = list(grouped.keys())
+    random.shuffle(doc_ids)
+
+    total_docs = len(doc_ids)
+    train_cut = int(total_docs * train_split)
+    train_docs = doc_ids[:train_cut]
+    valtest_docs = doc_ids[train_cut:]
+
+    # Split val/test within the valtest group
+    val_cut = int(len(valtest_docs) * val_test_split)
+    val_docs = valtest_docs[:val_cut]
+    test_docs = valtest_docs[val_cut:]
+
+    # === Step 3: Flatten grouped lines
+    def collect(docs):
+        imgs, lbls = [], []
+        for doc in docs:
+            for img, lbl in grouped[doc]:
+                imgs.append(img)
+                lbls.append(lbl)
+        return imgs, lbls
+
+    train_imgs, train_lbls = collect(train_docs)
+    val_imgs, val_lbls = collect(val_docs)
+    test_imgs, test_lbls = collect(test_docs)
+
+    print(f"Test set includes the following {len(test_docs)} documents:")
+    for doc in sorted(test_docs):
+        print(" -", doc)
+
+    return train_imgs, train_lbls, val_imgs, val_lbls, test_imgs, test_lbls
+
 
 
 def validate_split(images, labels):
