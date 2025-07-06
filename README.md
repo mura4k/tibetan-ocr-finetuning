@@ -1,6 +1,6 @@
 # Tibetan OCR Training
 
-A training pipeline for building OCR models for classical Tibetan scripts (Uchen) using deep learning and ONNX. Developed by the [BUDA Project](https://github.com/buda-base).
+A training pipeline for building OCR models for classical Tibetan scripts (Uchen) using deep learning and ONNX. Developed by the [BUDA Project](https://github.com/buda-base) and polished by me.
 
 ---
 
@@ -10,7 +10,6 @@ This repository provides:
 
 - 🧠 Training scripts for OCR models
 - 🪪 Configurable model and dataset parameters
-- ✂️ Data preprocessing and augmentation
 - 🔤 Unicode and EWTS output support
 - 📦 Export to ONNX for deployment
 
