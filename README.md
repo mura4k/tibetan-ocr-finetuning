@@ -124,11 +124,11 @@ This repository is forked from the part of the BUDA project. License terms TBD.
 
 ## 🧠 Credits
 
--Original scripts developed by: [BUDA Project](https://github.com/buda-base)
+- Original scripts developed by: [BUDA Project](https://github.com/buda-base)
 - OCR Design: Inspired by PaddleOCR, EasyOCR, and U-Net-based line detection
 
 ---
 
 ## 📬 Contact
 
-For questions or contributions, please open an [issue](https://github.com/buda-base/tibetan-ocr-training/issues) or contact the BUDA team.
+For questions or contributions, please open an [issue](https://github.com/buda-base/tibetan-ocr-training/issues).
