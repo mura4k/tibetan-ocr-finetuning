@@ -68,11 +68,11 @@ python export_onnx.py --checkpoint path/to/checkpoint.pth --output path/to/model
 Training data must be structured as:
 
 ```
-dataset/
+train/
 ├── images/
 │   ├── 000001.jpg
 │   ├── 000002.jpg
-├── labels/
+├── transcriptions/
 │   ├── 000001.txt
 │   ├── 000002.txt
 ```
