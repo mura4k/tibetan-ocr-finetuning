@@ -29,29 +29,6 @@ pip install -r requirements.txt
 
 ---
 
-## ⚙️ Configuration
-
-Model, dataset, and training parameters are defined in JSON config files:
-
-- `configs/model_config.json`
-- `configs/dataset_config.json`
-- `configs/training_config.json`
-
-Each config controls architecture, paths, charset, batch size, optimizer settings, etc.
-
----
-
-## 🚀 Training
-
-To launch training, run:
-
-```bash
-python train.py --config configs/training_config.json
-```
-
-You can also pass individual flags to override values in the config.
-
----
 
 ## 🔁 ONNX Export
 
